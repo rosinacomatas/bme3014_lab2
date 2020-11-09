@@ -42,7 +42,12 @@ ylabel('Z Force (N)')
 % Hint: plot the data first. Think of a SIMPLE method to identify the
 %   beginning and end of the "air" region of the data
 
+level = min(zforce)+50;  %create a threshold because the bottom of the jump trough in the data isn't constant
 
+threshdata = false(size(zforce)); % Create a thresholded array
+threshdata(zforce < level) = true;  %anything below the threshold is true
+
+air = find(threshdata == true);   %air time
 
 
 %% Programmatically identify the start of the jump impulse and end of landing impulse
