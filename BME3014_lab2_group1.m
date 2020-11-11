@@ -21,19 +21,19 @@ zdir = fname(:,3);
 
 % Create a time array (use the Fs variable from above)
 time = [];
-time(1) = 0; 
-time(2) = 1/Fs;
+time(1) = 0;
 temptime = 1/Fs;
 for k = 2:length(zdir)
     time(k) = time(k-1) + temptime;
 end
+
+disp(time)
 % Subtract the users weight from the entire dataset <- This is the data you
 %   will use for the remainder of the analysis
 zforce = zdir-userwt;
 
 zforce(zforce == -userwt) = [];
-time = (1:length(zforce))
-
+time = time(1:length(zforce))
 
 %% Programmatically identify start and end of "air" time
 %(the time when user is actually in the air)
@@ -107,30 +107,39 @@ airtime =airtime/200
 
 Jumpheight = vi*airtime +(a*(airtime)^2)/2
 
+airtime = time(EndofAirtime) - time(BeginningofAirtime); 
+airtime =airtime/200
+vf = 0; %vf is when the subject is at peak height
+t = 0.5*airtime; %airtime is half when jumper as at max height
+g = -9.81; %(m/s^2)
+v0 = vf - g*t; %find inital velocity
 
+height = (vf^2-v0^2)/(2*g) %height is 0.338m
+
+Jumpheight = vi*airtime +(a*(airtime)^2)/2
 
 %% Report target values (just use disp function)
 % Use the form: disp(['MEASURED PARAMETER ',num2str(VALUE), ' UNITS'])
 % Report total jumping impulse and landing impulse
 
-fprintf('JUMP IMPULSE ') disp(Jumpimpulse) fprintf('Ns ') fprintf('LANDING IMPULSE ') disp(Landingimpulse) fprintf('Ns ')
+%fprintf('JUMP IMPULSE ') disp(Jumpimpulse) fprintf('Ns ') fprintf('LANDING IMPULSE ') disp(Landingimpulse) fprintf('Ns ')
 
 % Report peak force
 
-disp('PEAK FORCE ', maxlandingforce, 'N ')
+%disp('PEAK FORCE ', maxlandingforce, 'N ')
 
 
 % Report estimated jump height
 
-disp('ESTIMATED JUMP HEIGHT ', Jumpheight, 'm')
+%disp('ESTIMATED JUMP HEIGHT ', Jumpheight, 'm')
 
 % Report jumping impulse normalized to (divided by) jumping height
 
-disp('NORMALIZED LANDING IMPULSE ', Jumpimpulse/Jumpheight, 'Ns ','NORMALIZED LANDING IMPULSE ', Landingimpulse/Jumpheight, 'Ns ')
+%disp('NORMALIZED LANDING IMPULSE ', Jumpimpulse/Jumpheight, 'Ns ','NORMALIZED LANDING IMPULSE ', Landingimpulse/Jumpheight, 'Ns ')
 
 % Report peak force normalized to jump height
 
-disp('PEAK FORCE NORMALIZED', maxlandingforce/Jumpheight, 'N ')
+%disp('PEAK FORCE NORMALIZED', maxlandingforce/Jumpheight, 'N ')
 
 %% Plot data in the following way
 % Plot your data (the data with the user's weight removed) as a black line
