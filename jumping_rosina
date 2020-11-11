@@ -17,7 +17,9 @@ userwt = 580.72; %N Weight of subject in newtons
 % Use the import data command to import data (See previous lab)
 
 % Extract the z-direction data (column 3)
-zdir = fname(1:800,3);
+
+% hard code here, need ot figure out how to change
+zdir = fname(1:800,3); 
 
 % Create a time array (use the Fs variable from above)
 time = [];
